@@ -14,10 +14,13 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    if @task.save
-      redirect_to tasks_path, notice: "Task was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @task.save
+        format.turbo_stream
+        format.html { redirect_to tasks_path, notice: "Task was successfully created." }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -25,16 +28,22 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update(task_params)
-      redirect_to tasks_path, notice: "Task was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @task.update(task_params)
+        format.turbo_stream
+        format.html { redirect_to tasks_path, notice: "Task was successfully updated." }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     @task.destroy
-    redirect_to tasks_path, notice: "Task was successfully deleted."
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to tasks_path, notice: "Task was successfully deleted." }
+    end
   end
 
   private
