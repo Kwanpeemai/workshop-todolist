@@ -8,7 +8,7 @@ class Task < ApplicationRecord
 
   scope :active, -> { where(completed: false) }
   scope :done, -> { where(completed: true) }
-  scope :search, ->(query) { where("title LIKE ?", "%#{query}%") if query.present? }
+  scope :search, ->(query) { where("title LIKE ?", "%#{sanitize_sql_like(query)}%") if query.present? }
   scope :tagged_with, ->(tag_name) { joins(:tags).where(tags: { name: tag_name }) if tag_name.present? }
 
   def tag_list

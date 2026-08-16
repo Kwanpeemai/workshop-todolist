@@ -22,14 +22,16 @@ export default class SortableController extends Controller {
       return match ? match[1] : null
     }).filter(Boolean)
 
-    const token = document.querySelector('meta[name="csrf-token"]').content
+    const meta = document.querySelector('meta[name="csrf-token"]')
+    if (!meta) return
+
     fetch("/tasks/sort", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": token
+        "X-CSRF-Token": meta.content
       },
       body: JSON.stringify({ task_ids: ids })
-    })
+    }).catch(() => {})
   }
 }

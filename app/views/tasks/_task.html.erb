@@ -1,5 +1,7 @@
 <%= turbo_frame_tag task do %>
-  <div id="<%= dom_id(task) %>" class="group flex items-center gap-3 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors duration-150 animate-slide-down <%= 'opacity-60' if task.completed? %>">
+  <% task_classes = "group flex items-center gap-3 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors duration-150 animate-slide-down" %>
+  <% task_classes += " opacity-60" if task.completed? %>
+  <div id="<%= dom_id(task) %>" class="<%= task_classes %>">
     <%# Drag handle %>
     <div data-sortable-handle class="cursor-grab active:cursor-grabbing text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 transition-colors">
       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>
@@ -15,25 +17,29 @@
 
     <%# Title + meta %>
     <div class="flex-1 min-w-0">
-      <span class="block text-gray-800 dark:text-gray-200 font-medium truncate <%= 'line-through text-gray-400 dark:text-gray-500' if task.completed? %>">
+      <% title_classes = "block text-gray-800 dark:text-gray-200 font-medium truncate" %>
+      <% title_classes += " line-through text-gray-400 dark:text-gray-500" if task.completed? %>
+      <span class="<%= title_classes %>">
         <%= task.title %>
       </span>
       <div class="flex items-center gap-2 mt-1 flex-wrap">
         <% unless task.low? %>
-          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold
-            <%= task.high? ? 'bg-coral-100 text-coral-700 dark:bg-coral-900/30 dark:text-coral-400' : 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400' %>">
+          <% priority_classes = "inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold" %>
+          <% priority_classes += task.high? ? " bg-coral-100 text-coral-700 dark:bg-coral-900/30 dark:text-coral-400" : " bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400" %>
+          <span class="<%= priority_classes %>">
             <%= task.priority.capitalize %>
           </span>
         <% end %>
         <% if task.due_date.present? %>
-          <span class="inline-flex items-center gap-1 text-xs
-            <%= if task.overdue?
-                  'text-coral-600 dark:text-coral-400 font-semibold'
-                elsif task.due_soon?
-                  'text-primary-600 dark:text-primary-400'
-                else
-                  'text-gray-400 dark:text-gray-500'
-                end %>">
+          <% due_classes = "inline-flex items-center gap-1 text-xs" %>
+          <% if task.overdue? %>
+            <% due_classes += " text-coral-600 dark:text-coral-400 font-semibold" %>
+          <% elsif task.due_soon? %>
+            <% due_classes += " text-primary-600 dark:text-primary-400" %>
+          <% else %>
+            <% due_classes += " text-gray-400 dark:text-gray-500" %>
+          <% end %>
+          <span class="<%= due_classes %>">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
             <%= task.due_date.strftime("%b %d") %>
             <%= " — Overdue!" if task.overdue? %>
