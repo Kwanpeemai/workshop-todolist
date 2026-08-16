@@ -1,9 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  title: MyString
+  title: Buy groceries
   completed: false
+  priority: 0
+  position: 1
 
 two:
-  title: MyString
+  title: Clean house
   completed: false
+  priority: 1
+  position: 2

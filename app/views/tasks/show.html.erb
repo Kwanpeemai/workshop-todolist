@@ -1,24 +1,45 @@
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-  <h1 class="text-3xl font-extrabold text-gray-900 mb-4"><%= @task.title %></h1>
+<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
+  <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-4"><%= @task.title %></h1>
 
-  <div class="mb-6">
+  <div class="mb-6 flex flex-wrap items-center gap-3">
     <% if @task.completed? %>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-700">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
         Completed
       </span>
     <% else %>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-700">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
         Pending
+      </span>
+    <% end %>
+
+    <% unless @task.low? %>
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+        <%= @task.high? ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' %>">
+        <%= @task.priority.capitalize %> Priority
+      </span>
+    <% end %>
+
+    <% if @task.due_date.present? %>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium
+        <%= if @task.overdue?
+              'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+            elsif @task.due_soon?
+              'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+            else
+              'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+            end %>">
+        Due <%= @task.due_date.strftime("%B %d, %Y") %>
+        <%= " — Overdue!" if @task.overdue? %>
       </span>
     <% end %>
   </div>
 
   <div class="flex items-center gap-4">
     <%= link_to "Back", tasks_path,
-        class: "text-sm text-gray-500 hover:text-gray-700 transition-colors" %>
+        class: "text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" %>
     <%= link_to "Edit", edit_task_path(@task),
-        class: "text-sm text-gray-600 hover:text-gray-800 font-medium transition-colors" %>
+        class: "text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white font-medium transition-colors" %>
   </div>
 </div>

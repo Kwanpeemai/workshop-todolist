@@ -1,6 +1,6 @@
 <%= turbo_stream.replace @task %>
 
 <%= turbo_stream.update "task_counts" do %>
-  <span><%= Task.where(completed: false).count %> remaining</span>
-  <span><%= Task.where(completed: true).count %> completed</span>
+  <span><%= Task.active.count %> remaining</span>
+  <span><%= Task.done.count %> completed</span>
 <% end %>

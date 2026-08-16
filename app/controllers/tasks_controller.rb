@@ -2,7 +2,13 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
 
   def index
-    @tasks = Task.order(created_at: :desc)
+    @tasks = Task.order(:position)
+    @filter = params[:filter] || "all"
+    @tasks = case @filter
+    when "active" then @tasks.active
+    when "completed" then @tasks.done
+    else @tasks
+    end
   end
 
   def show
@@ -46,6 +52,13 @@ class TasksController < ApplicationController
     end
   end
 
+  def sort
+    params[:task_ids].each_with_index do |id, index|
+      Task.where(id: id).update_all(position: index + 1)
+    end
+    head :ok
+  end
+
   private
 
   def set_task
@@ -53,6 +66,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :completed)
+    params.require(:task).permit(:title, :completed, :priority, :due_date)
   end
 end
