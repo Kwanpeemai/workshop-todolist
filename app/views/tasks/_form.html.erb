@@ -16,7 +16,7 @@
           class: "w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-700 dark:text-gray-200 transition" %>
     </div>
 
-    <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
       <div>
         <%= f.label :priority, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" %>
         <%= f.select :priority, options_for_select([["Low", "low"], ["Medium", "medium"], ["High", "high"]], task.priority),

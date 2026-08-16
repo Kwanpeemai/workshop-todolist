@@ -1,9 +1,10 @@
-<div class="mb-8 flex items-center justify-between">
+<div class="mb-8 flex items-start sm:items-center justify-between gap-4">
   <div>
-    <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Calendar</h1>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Calendar</h1>
     <p class="mt-2 text-gray-500 dark:text-gray-400"><%= @date.strftime("%B %Y") %></p>
   </div>
-  <div class="flex items-center gap-2">
+  <%# Desktop %>
+  <div class="hidden sm:flex items-center gap-2">
     <%= link_to tasks_path, class: "px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-xl transition" do %>
       &larr; List
     <% end %>
@@ -12,6 +13,24 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
       </svg>
     </button>
+  </div>
+  <%# Mobile: hamburger %>
+  <div class="sm:hidden relative" data-controller="menu">
+    <button data-action="click->menu#toggle" class="p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+    </button>
+    <div data-menu-target="panel" class="hidden absolute right-0 top-12 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-50 py-1">
+      <%= link_to tasks_path, class: "flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" do %>
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+        List
+      <% end %>
+      <button data-controller="darkmode" data-action="click->darkmode#toggle" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+        <svg data-darkmode-target="icon" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
+        </svg>
+        Dark Mode
+      </button>
+    </div>
   </div>
 </div>
 
@@ -36,9 +55,11 @@
 <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
   <%# Day headers %>
   <div class="grid grid-cols-7 border-b border-gray-200 dark:border-gray-700">
-    <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |day| %>
-      <div class="px-2 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-        <%= day %>
+    <% %w[S M T W T F S].each_with_index do |short, idx| %>
+      <% full = %w[Sun Mon Tue Wed Thu Fri Sat][idx] %>
+      <div class="px-1 sm:px-2 py-2 sm:py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        <span class="hidden sm:inline"><%= full %></span>
+        <span class="sm:hidden"><%= short %></span>
       </div>
     <% end %>
   </div>
@@ -49,12 +70,12 @@
       <% tasks = @tasks_by_date[date] || [] %>
       <% is_today = date == Date.current %>
       <% is_current_month = date.month == @date.month %>
-      <div class="min-h-[100px] border-b border-r border-gray-100 dark:border-gray-700/50 p-1.5
+      <div class="min-h-[60px] sm:min-h-[100px] border-b border-r border-gray-100 dark:border-gray-700/50 p-1 sm:p-1.5
         <%= 'bg-gray-50/50 dark:bg-gray-900/30' unless is_current_month %>
         <%= i % 7 == 0 ? 'border-l-0' : '' %>">
         <%# Date number %>
-        <div class="flex items-center justify-center mb-1">
-          <span class="inline-flex items-center justify-center w-7 h-7 text-xs font-medium rounded-full
+        <div class="flex items-center justify-center mb-0.5 sm:mb-1">
+          <span class="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 text-[10px] sm:text-xs font-medium rounded-full
             <%= if is_today
                   'bg-coral-500 text-white'
                 elsif is_current_month
@@ -68,8 +89,8 @@
 
         <%# Tasks %>
         <div class="space-y-0.5">
-          <% tasks.first(3).each do |task| %>
-            <%= link_to task_path(task), class: "block px-1.5 py-0.5 rounded text-xs truncate transition hover:opacity-80
+          <% tasks.first(2).each do |task| %>
+            <%= link_to task_path(task), class: "block px-1 sm:px-1.5 py-0.5 rounded text-[10px] sm:text-xs truncate transition hover:opacity-80
               #{if task.completed?
                   'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 line-through'
                 elsif task.high?
@@ -82,9 +103,9 @@
               <%= task.title %>
             <% end %>
           <% end %>
-          <% if tasks.size > 3 %>
-            <div class="px-1.5 text-xs text-gray-400 dark:text-gray-500 font-medium">
-              +<%= tasks.size - 3 %> more
+          <% if tasks.size > 2 %>
+            <div class="px-1 sm:px-1.5 text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 font-medium">
+              +<%= tasks.size - 2 %> more
             </div>
           <% end %>
         </div>
@@ -94,7 +115,7 @@
 </div>
 
 <%# Legend %>
-<div class="mt-4 flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 px-1">
+<div class="mt-4 flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-gray-400 dark:text-gray-500 px-1">
   <span class="flex items-center gap-1.5">
     <span class="w-2.5 h-2.5 rounded-sm bg-coral-100 dark:bg-coral-900/30"></span> High
   </span>
