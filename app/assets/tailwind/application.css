@@ -4,6 +4,39 @@
 
 @theme {
   --color-gray-750: #2a2f3a;
+
+  --color-primary-50: #faf6e8;
+  --color-primary-100: #f5edcf;
+  --color-primary-200: #ebdba0;
+  --color-primary-300: #dcc573;
+  --color-primary-400: #c9b05a;
+  --color-primary-500: #b59b42;
+  --color-primary-600: #a18935;
+  --color-primary-700: #7d6b29;
+  --color-primary-800: #594c1d;
+  --color-primary-900: #352d11;
+
+  --color-coral-50: #fef2f1;
+  --color-coral-100: #fde5e4;
+  --color-coral-200: #f9bab8;
+  --color-coral-300: #ea7671;
+  --color-coral-400: #e05a54;
+  --color-coral-500: #d44038;
+  --color-coral-600: #b8302a;
+  --color-coral-700: #8c2420;
+  --color-coral-800: #601916;
+  --color-coral-900: #340e0c;
+
+  --color-forest-50: #f0f5ef;
+  --color-forest-100: #dfeadd;
+  --color-forest-200: #b8d4b4;
+  --color-forest-300: #7fb479;
+  --color-forest-400: #5c8f57;
+  --color-forest-500: #4a7a46;
+  --color-forest-600: #3b6538;
+  --color-forest-700: #2d4f2b;
+  --color-forest-800: #1f391d;
+  --color-forest-900: #112310;
 }
 
 @keyframes slide-down {

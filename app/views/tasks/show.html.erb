@@ -3,12 +3,12 @@
 
   <div class="mb-6 flex flex-wrap items-center gap-3">
     <% if @task.completed? %>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-forest-100 dark:bg-forest-900/30 text-forest-700 dark:text-forest-400">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
         Completed
       </span>
     <% else %>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-coral-100 dark:bg-coral-900/30 text-coral-700 dark:text-coral-400">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
         Pending
       </span>
@@ -16,7 +16,7 @@
 
     <% unless @task.low? %>
       <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-        <%= @task.high? ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' %>">
+        <%= @task.high? ? 'bg-coral-100 dark:bg-coral-900/30 text-coral-700 dark:text-coral-400' : 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' %>">
         <%= @task.priority.capitalize %> Priority
       </span>
     <% end %>
@@ -24,9 +24,9 @@
     <% if @task.due_date.present? %>
       <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium
         <%= if @task.overdue?
-              'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+              'bg-coral-100 dark:bg-coral-900/30 text-coral-700 dark:text-coral-400'
             elsif @task.due_soon?
-              'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+              'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400'
             else
               'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
             end %>">

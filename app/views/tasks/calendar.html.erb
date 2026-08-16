@@ -23,7 +23,7 @@
   <% end %>
 
   <% if @date.month != Date.current.month || @date.year != Date.current.year %>
-    <%= link_to "Today", calendar_tasks_path, class: "px-3 py-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition" %>
+    <%= link_to "Today", calendar_tasks_path, class: "px-3 py-1.5 text-sm font-medium text-coral-600 dark:text-coral-400 hover:bg-coral-50 dark:hover:bg-coral-900/30 rounded-lg transition" %>
   <% end %>
 
   <%= link_to calendar_tasks_path(date: @date.next_month.strftime("%Y-%m-%d")),
@@ -56,7 +56,7 @@
         <div class="flex items-center justify-center mb-1">
           <span class="inline-flex items-center justify-center w-7 h-7 text-xs font-medium rounded-full
             <%= if is_today
-                  'bg-indigo-600 text-white'
+                  'bg-coral-500 text-white'
                 elsif is_current_month
                   'text-gray-700 dark:text-gray-300'
                 else
@@ -73,11 +73,11 @@
               #{if task.completed?
                   'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 line-through'
                 elsif task.high?
-                  'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                  'bg-coral-100 dark:bg-coral-900/30 text-coral-700 dark:text-coral-400'
                 elsif task.medium?
-                  'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                  'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400'
                 else
-                  'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400'
+                  'bg-forest-50 dark:bg-forest-900/30 text-forest-700 dark:text-forest-400'
                 end}" do %>
               <%= task.title %>
             <% end %>
@@ -96,13 +96,13 @@
 <%# Legend %>
 <div class="mt-4 flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 px-1">
   <span class="flex items-center gap-1.5">
-    <span class="w-2.5 h-2.5 rounded-sm bg-red-100 dark:bg-red-900/30"></span> High
+    <span class="w-2.5 h-2.5 rounded-sm bg-coral-100 dark:bg-coral-900/30"></span> High
   </span>
   <span class="flex items-center gap-1.5">
-    <span class="w-2.5 h-2.5 rounded-sm bg-amber-100 dark:bg-amber-900/30"></span> Medium
+    <span class="w-2.5 h-2.5 rounded-sm bg-primary-100 dark:bg-primary-900/30"></span> Medium
   </span>
   <span class="flex items-center gap-1.5">
-    <span class="w-2.5 h-2.5 rounded-sm bg-indigo-50 dark:bg-indigo-900/30"></span> Low
+    <span class="w-2.5 h-2.5 rounded-sm bg-forest-100 dark:bg-forest-900/30"></span> Low
   </span>
   <span class="flex items-center gap-1.5">
     <span class="w-2.5 h-2.5 rounded-sm bg-gray-100 dark:bg-gray-700"></span> Done
