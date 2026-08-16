@@ -1,5 +1,9 @@
 <%= turbo_stream.replace @task %>
 
+<%= turbo_stream.update "notification_bell" do %>
+  <%= render "tasks/notification_bell" %>
+<% end %>
+
 <%= turbo_stream.update "task_counts" do %>
   <span><%= Task.active.count %> remaining</span>
   <span><%= Task.done.count %> completed</span>

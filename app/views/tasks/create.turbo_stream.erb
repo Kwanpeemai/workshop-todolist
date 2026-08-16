@@ -42,6 +42,10 @@
   <% end %>
 <% end %>
 
+<%= turbo_stream.update "notification_bell" do %>
+  <%= render "tasks/notification_bell" %>
+<% end %>
+
 <%= turbo_stream.replace "task_counts" do %>
   <div id="task_counts" class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-500 px-1">
     <span><%= Task.active.count %> remaining</span>
