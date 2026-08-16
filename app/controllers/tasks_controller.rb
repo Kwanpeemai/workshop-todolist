@@ -9,6 +9,9 @@ class TasksController < ApplicationController
     when "completed" then @tasks.done
     else @tasks
     end
+    @tasks = @tasks.search(params[:query]) if params[:query].present?
+    @tasks = @tasks.tagged_with(params[:tag]) if params[:tag].present?
+    @tags = Tag.joins(:task_tags).distinct.order(:name)
   end
 
   def show
@@ -66,6 +69,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :completed, :priority, :due_date)
+    params.require(:task).permit(:title, :completed, :priority, :due_date, tag_ids: [])
   end
 end

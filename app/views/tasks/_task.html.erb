@@ -18,30 +18,33 @@
       <span class="block text-gray-800 dark:text-gray-200 font-medium truncate <%= 'line-through text-gray-400 dark:text-gray-500' if task.completed? %>">
         <%= task.title %>
       </span>
-      <% if task.due_date.present? || !task.low? %>
-        <div class="flex items-center gap-2 mt-1">
-          <% unless task.low? %>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold
-              <%= task.high? ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' %>">
-              <%= task.priority.capitalize %>
-            </span>
-          <% end %>
-          <% if task.due_date.present? %>
-            <span class="inline-flex items-center gap-1 text-xs
-              <%= if task.overdue?
-                    'text-red-600 dark:text-red-400 font-semibold'
-                  elsif task.due_soon?
-                    'text-amber-600 dark:text-amber-400'
-                  else
-                    'text-gray-400 dark:text-gray-500'
-                  end %>">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
-              <%= task.due_date.strftime("%b %d") %>
-              <%= " — Overdue!" if task.overdue? %>
-            </span>
-          <% end %>
-        </div>
-      <% end %>
+      <div class="flex items-center gap-2 mt-1 flex-wrap">
+        <% unless task.low? %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold
+            <%= task.high? ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' %>">
+            <%= task.priority.capitalize %>
+          </span>
+        <% end %>
+        <% if task.due_date.present? %>
+          <span class="inline-flex items-center gap-1 text-xs
+            <%= if task.overdue?
+                  'text-red-600 dark:text-red-400 font-semibold'
+                elsif task.due_soon?
+                  'text-amber-600 dark:text-amber-400'
+                else
+                  'text-gray-400 dark:text-gray-500'
+                end %>">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+            <%= task.due_date.strftime("%b %d") %>
+            <%= " — Overdue!" if task.overdue? %>
+          </span>
+        <% end %>
+        <% task.tags.each do |tag| %>
+          <%= link_to tag.name, tasks_path(tag: tag.name),
+              data: { turbo_action: "replace" },
+              class: "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition" %>
+        <% end %>
+      </div>
     </div>
 
     <%# Actions %>

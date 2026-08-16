@@ -29,6 +29,27 @@
       </div>
     </div>
 
+    <div class="mb-6">
+      <span class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Tags</span>
+      <div class="flex flex-wrap gap-2">
+        <% Tag.order(:name).each do |tag| %>
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="task[tag_ids][]" value="<%= tag.id %>"
+                   <%= "checked" if task.tag_ids.include?(tag.id) %>
+                   class="hidden peer" />
+            <span class="px-3 py-1.5 rounded-full text-sm font-medium border transition-all
+              peer-checked:bg-indigo-100 peer-checked:text-indigo-700 peer-checked:border-indigo-300
+              dark:peer-checked:bg-indigo-900/40 dark:peer-checked:text-indigo-300 dark:peer-checked:border-indigo-700
+              bg-gray-50 text-gray-500 border-gray-200
+              dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600
+              hover:bg-gray-100 dark:hover:bg-gray-600">
+              <%= tag.name %>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
     <div class="mb-8 flex items-center gap-3">
       <%= f.check_box :completed,
           class: "w-5 h-5 rounded-md border-2 border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500 cursor-pointer dark:bg-gray-700" %>

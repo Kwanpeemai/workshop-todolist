@@ -7,19 +7,38 @@
 <% end %>
 
 <%= turbo_stream.update "task_form" do %>
-  <%= form_with model: Task.new, url: tasks_path, class: "mb-8 flex flex-wrap gap-3" do |f| %>
-    <div class="flex-1 min-w-0">
-      <%= f.text_field :title, placeholder: "What needs to be done?", autofocus: true,
-          class: "w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 transition" %>
+  <%= form_with model: Task.new, url: tasks_path, class: "mb-8 space-y-3" do |f| %>
+    <div class="flex gap-3 flex-wrap">
+      <div class="flex-1 min-w-0">
+        <%= f.text_field :title, placeholder: "What needs to be done?", autofocus: true,
+            class: "w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 transition" %>
+      </div>
+      <div class="flex gap-2">
+        <%= f.select :priority, options_for_select([["Low", "low"], ["Medium", "medium"], ["High", "high"]], "low"),
+            {}, class: "px-3 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer transition" %>
+        <%= f.date_field :due_date,
+            class: "px-3 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer transition" %>
+      </div>
+      <%= f.submit "Add",
+          class: "px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer active:scale-95" %>
     </div>
-    <div class="flex gap-2">
-      <%= f.select :priority, options_for_select([["Low", "low"], ["Medium", "medium"], ["High", "high"]], "low"),
-          {}, class: "px-3 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer transition" %>
-      <%= f.date_field :due_date,
-          class: "px-3 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer transition" %>
+    <div class="flex items-center gap-1.5">
+        <% Tag.order(:name).each do |tag| %>
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="task[tag_ids][]" value="<%= tag.id %>"
+                   class="hidden peer" />
+            <span class="px-2.5 py-1 rounded-full text-xs font-medium border transition-all
+              peer-checked:bg-indigo-100 peer-checked:text-indigo-700 peer-checked:border-indigo-300
+              dark:peer-checked:bg-indigo-900/40 dark:peer-checked:text-indigo-300 dark:peer-checked:border-indigo-700
+              bg-gray-50 text-gray-500 border-gray-200
+              dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600
+              hover:bg-gray-100 dark:hover:bg-gray-600">
+              <%= tag.name %>
+            </span>
+          </label>
+        <% end %>
+      </div>
     </div>
-    <%= f.submit "Add",
-        class: "px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer active:scale-95" %>
   <% end %>
 <% end %>
 

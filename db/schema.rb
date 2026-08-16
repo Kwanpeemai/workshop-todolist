@@ -10,7 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_08_16_035123) do
+ActiveRecord::Schema[8.0].define(version: 2026_08_16_040640) do
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "task_tags", force: :cascade do |t|
+    t.integer "task_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_task_tags_on_tag_id"
+    t.index ["task_id", "tag_id"], name: "index_task_tags_on_task_id_and_tag_id", unique: true
+    t.index ["task_id"], name: "index_task_tags_on_task_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
     t.boolean "completed", default: false, null: false
@@ -20,4 +37,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_16_035123) do
     t.date "due_date"
     t.integer "position"
   end
+
+  add_foreign_key "task_tags", "tags"
+  add_foreign_key "task_tags", "tasks"
 end
