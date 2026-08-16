@@ -17,6 +17,15 @@ class TasksController < ApplicationController
   def show
   end
 
+  def calendar
+    @date = params[:date] ? Date.parse(params[:date]) : Date.current
+    @start_date = @date.beginning_of_month.beginning_of_week(:sunday)
+    @end_date = @date.end_of_month.end_of_week(:sunday)
+    @tasks_by_date = Task.where(due_date: @start_date..@end_date)
+                         .order(priority: :desc, title: :asc)
+                         .group_by(&:due_date)
+  end
+
   def new
     @task = Task.new
   end

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :tasks do
     collection do
       patch :sort
+      get :calendar
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

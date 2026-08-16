@@ -3,13 +3,17 @@
     <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Todo List</h1>
     <p class="mt-2 text-gray-500 dark:text-gray-400">Stay organized, get things done.</p>
   </div>
-  <button data-controller="darkmode" data-action="click->darkmode#toggle" class="p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-    <svg data-darkmode-target="icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
-    </svg>
-  </button>
+  <div class="flex gap-2">
+    <%= link_to calendar_tasks_path, class: "p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" do %>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+    <% end %>
+    <button data-controller="darkmode" data-action="click->darkmode#toggle" class="p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+      <svg data-darkmode-target="icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+      </svg>
+    </button>
+  </div>
 </div>
-
 <div id="task_form">
   <%= form_with model: Task.new, url: tasks_path, class: "mb-8 space-y-3" do |f| %>
     <div class="flex gap-3 flex-wrap">
@@ -30,7 +34,7 @@
       <% Tag.order(:name).each do |tag| %>
         <label class="inline-flex items-center cursor-pointer">
           <input type="checkbox" name="task[tag_ids][]" value="<%= tag.id %>"
-                 class="hidden peer" />
+                 class="hidden peer">
           <span class="px-2.5 py-1 rounded-full text-xs font-medium border transition-all
             peer-checked:bg-indigo-100 peer-checked:text-indigo-700 peer-checked:border-indigo-300
             dark:peer-checked:bg-indigo-900/40 dark:peer-checked:text-indigo-300 dark:peer-checked:border-indigo-700
@@ -44,12 +48,11 @@
     </div>
   <% end %>
 </div>
-
 <%# Search bar %>
 <div class="mb-4">
   <%= form_with url: tasks_path, method: :get, class: "flex gap-2", data: { turbo_action: "replace" } do |f| %>
     <div class="flex-1 relative">
-      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
       <%= f.text_field :query, value: params[:query], placeholder: "Search tasks...",
           class: "w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500 transition" %>
     </div>
@@ -63,7 +66,6 @@
     <% end %>
   <% end %>
 </div>
-
 <%# Tag filter %>
 <% if @tags.any? %>
   <div class="mb-4 flex flex-wrap gap-2">
@@ -79,7 +81,6 @@
     <% end %>
   </div>
 <% end %>
-
 <% filter = params[:filter] || "all" %>
 <div class="mb-6 flex gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl" data-controller="filter">
   <% [["all", "All"], ["active", "Active"], ["completed", "Completed"]].each do |value, label| %>
@@ -93,12 +94,9 @@
     </a>
   <% end %>
 </div>
-
-
 <div id="tasks" class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden divide-y divide-gray-100 dark:divide-gray-700 <%= 'hidden' unless @tasks.any? %>" data-controller="sortable">
   <%= render @tasks %>
 </div>
-
 <% unless @tasks.any? %>
   <div id="empty_state" class="text-center py-16">
     <div class="text-6xl mb-4">&#9996;</div>
@@ -115,7 +113,6 @@
     </p>
   </div>
 <% end %>
-
 <div id="task_counts" class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-500 px-1 <%= 'hidden' unless @tasks.any? %>">
   <span><%= Task.active.count %> remaining</span>
   <span><%= Task.done.count %> completed</span>
